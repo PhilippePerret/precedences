@@ -1,3 +1,4 @@
+require 'clir'
 require "precedences/version"
 
 module Precedences

@@ -1,28 +1,32 @@
 require_relative 'lib/precedences/version'
 
-Gem::Specification.new do |spec|
-  spec.name          = "precedences"
-  spec.version       = Precedences::VERSION
-  spec.authors       = ["PhilippePerret"]
-  spec.email         = ["philippe.perret@yahoo.fr"]
+Gem::Specification.new do |s|
+  s.name          = "precedences"
+  s.version       = Precedences::VERSION
+  s.authors       = ["PhilippePerret"]
+  s.email         = ["philippe.perret@yahoo.fr"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  s.summary       = %q{Sort list with "the last is the first" principle}
+  s.description   = %q{Tty-prompt extension to sort a list of choices along the "last is firts" principle.}
+  s.homepage      = "https://github.com/PhilippePerret/precedences"
+  s.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+  s.add_dependency 'clir'
+  s.add_development_dependency 'minitest'
+  s.add_development_dependency 'minitest-color'
 
-  spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
-  spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  s.metadata["allowed_push_host"] = "https://github.com/PhilippePerret/precedences"
+
+  s.metadata["homepage_uri"] = s.homepage
+  s.metadata["source_code_uri"] = "https://github.com/PhilippePerret/precedences"
+  s.metadata["changelog_uri"] = "https://github.com/PhilippePerret/precedences/CHANGELOG"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  s.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
+    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|features)/}) }
   end
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  s.bindir        = "exe"
+  s.executables   = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  s.require_paths = ["lib"]
 end

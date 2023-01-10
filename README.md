@@ -1,8 +1,6 @@
 # Precedences
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/precedences`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Gestion des items de liste (avec TTY-Prompt) sous le principe "the last is the first" (le premier est le dernier), c'est-à-dire que le derrnier choix effectué sera toujours le premier présenté ensuite.
 
 ## Installation
 
@@ -22,7 +20,63 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+~~~ruby
+require 'precedences'
+
+choices = [
+  {name:"First choix", value: :first},
+  {name:"Second choix", value: :second},
+  {name:"Third choix", value: :third},
+]
+
+myfile = File.join(__dir__, 'my.precedences')
+
+choices_with_precedences(choices, myfile) do
+  "Choose a item"
+end
+
+~~~
+
+With the code above, the first time, the list will display:
+
+~~~
+> First choix
+  Second choix
+  Third choix
+~~~
+
+I choose "Second choix":
+
+~~~
+  First choix
+> Second choix
+  Third choix
+~~~
+
+The next time I use the command, the list will display:
+
+~~~
+> Second choix
+  First choix
+  Third choix
+~~~
+
+Then I choose "Third choix":
+
+~~~
+  Second choix
+  First choix
+> Third choix
+~~~
+
+The next time I use the command, the list displayed should be:
+
+~~~
+> Third choix
+  Second choix
+  First choix
+~~~
+
 
 ## Development
 

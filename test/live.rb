@@ -10,7 +10,7 @@ choices = [
 
 precfile = File.join(__dir__, '.precedences')
 
-3.times do
+4.times do
   choices_with_precedences(choices, precfile) do
     "Quel item choisir ?"
   end

@@ -1,7 +1,7 @@
 require "test_helper"
 require 'osatest'
 
-class PrecedencesTest < Minitest::Test
+class IntegrationPrecedencesTest < Minitest::Test
 
   def setup
     super

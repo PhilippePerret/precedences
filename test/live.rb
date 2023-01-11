@@ -10,8 +10,16 @@ choices = [
 
 precfile = File.join(__dir__, '.precedences')
 
-4.times do
-  choices_with_precedences(choices, precfile) do
-    "Quel item choisir ?"
+case ARGV[0]
+when "test1"
+  puts "Je dois apprendre à faire le test d'intégration 1"
+  precedencize(choices, precfile) do |q|
+    q.per_page 3
+  end
+else
+  4.times do
+    precedencize(choices, precfile) do |q|
+      q.question "Quel item choisir ?"
+    end
   end
 end

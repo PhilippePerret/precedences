@@ -48,9 +48,10 @@ class Precedence
     choices = choices_ini.dup
   
     #
-    # Sort the list of choices
+    # Sort the list of choices 
+    # (and treate other choices — add cancel, etc.)
     # 
-    choices = sort_items(choices)
+    choices = prepare_choices(choices)
 
     if block_given?
       # 
@@ -156,6 +157,24 @@ class Precedence
     ##
     # = main =
     #
+    def prepare_choices(choices)
+      # 
+      # Classement des choix par précédence
+      # 
+      choices = sort_items(choices)
+      # 
+      # Faut-il ajouter un choix cancel ?
+      # 
+      if add_choice_cancel?
+        add_method = (@add_choice_cancel[:position] == :down) ? :push : :unshift
+        choices.send(add_method, @add_choice_cancel)
+      end
+      # 
+      # On retourne les choix préparés
+      # 
+      return choices
+    end
+    #
     # Main method whose sort items
     # 
     # @api private
@@ -178,13 +197,6 @@ class Precedence
         choices.sort!{|a, b|
           (prec_ids.index(a[:value].to_s)||10000) <=> (prec_ids.index(b[:value].to_s)||10000)
         }
-      end
-      # 
-      # Faut-il ajouter un choix cancel ?
-      # 
-      if add_choice_cancel?
-        add_method = (@add_choice_cancel[:position] == :down) ? :push : :unshift
-        choices.send(add_method, @add_choice_cancel)
       end
       return choices
     end

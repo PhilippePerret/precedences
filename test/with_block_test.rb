@@ -7,7 +7,7 @@ class BlockPrecedencesTest < Minitest::Test
     super
     File.delete(precfile) if File.exist?(precfile)
     puts "version = #{version.inspect}"
-    update_gem
+    # update_gem
   end
 
   def teardown

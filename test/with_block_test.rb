@@ -6,7 +6,7 @@ class BlockPrecedencesTest < Minitest::Test
   def setup
     super
     File.delete(precfile) if File.exist?(precfile)
-    update_gem
+    # update_gem
   end
 
   def teardown
@@ -16,6 +16,7 @@ class BlockPrecedencesTest < Minitest::Test
 
   def update_gem
     `cd "#{APP_FOLDER}";git commit -am "Dépôt du #{Time.now}"; git push; rake build; gem install pkg/precedences-#{version}.gem`
+    clear
   end
 
   def version

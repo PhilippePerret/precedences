@@ -182,7 +182,7 @@ class Precedence
         choice.key?(:name) || raise(ArgumentError.new("Bad choices. Every choice should define :name attribute."))
         choice.key?(:value) || raise(ArgumentError.new("Bad choices. Every choice should define :value attribute."))
         case choice[:value]
-        when Symbol, String, Numeric then
+        when Symbol, String, Numeric, NilClass then
           val = choice[:value].to_s
           if cvalues.key?(val)
             raise ArgumentError.new("Bad choices. Value collision: #{choice[:value].inspect} and #{cvalues[val].inspect} are the same, for precedences.")

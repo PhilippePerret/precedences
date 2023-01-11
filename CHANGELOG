@@ -1,3 +1,7 @@
+# 1.0.1
+
+  - :value of a choice can be nil.
+
 # 1.0.0
   
-  - First operational release
+  - First operational release.

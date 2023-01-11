@@ -139,9 +139,13 @@ class Precedence
       prec_ids = get_precedences_ids
       if precedences_per_index?
         choices_copy = choices.dup
-        choices = prec_ids.map { |id| choices_copy.delete_at(id.to_i - 1) }
+        choices = prec_ids.map do |id| 
+          item = choices_copy[id.to_i - 1]
+          choices_copy[id.to_i - 1] = nil
+          item
+        end
         # On ajoute les choix restants
-        choices += choices_copy
+        choices += choices_copy.compact
       else
         # 
         # Cas normal

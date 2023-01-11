@@ -138,7 +138,10 @@ class Precedence
       return choices unless File.exist?(filepath)
       prec_ids = get_precedences_ids
       if precedences_per_index?
-        choices = prec_ids.map { |id| choices[id.to_i - 1] }
+        choices_copy = choices.dup
+        choices = prec_ids.map { |id| choices_copy.delete_at(id.to_i - 1) }
+        # On ajoute les choix restants
+        choices += choices_copy
       else
         # 
         # Cas normal

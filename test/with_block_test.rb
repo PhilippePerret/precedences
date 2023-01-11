@@ -39,6 +39,19 @@ class BlockPrecedencesTest < Minitest::Test
 
   def test_with_block_and_customs_things
 
+    # - avec des :value complexe (enregistrement par index) -
+    run_test "test-precedence-par-index"
+    tosa.delay = 1
+    tosa << [:DOWN, :RET]   # => Hash (2)  2
+    tosa << [3.down, :RET]  # => String (4) 4,2
+    tosa << [2.down, :RET]  # => Integer (1) 4, 2, 1
+    tosa << [3.down, :RET]  # => Array   (3) 3,4,2,1
+    expected = [3, 4, 2, 1]
+    actual = File.read(precfile).split("\n").map(&:to_i)
+    assert_equal(expected, actual, "Liste des index devrait être #{expected.inspect} et c'est #{actual.inspect}")
+    puts "OK !".vert
+    sleep 1
+exit
     # - per_page limité -
     run_test "limit-per-page"
     tosa.has_in_last_lines(["Choose", "First","Second","Third"])

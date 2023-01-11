@@ -51,6 +51,18 @@ when "test-default-value-by-value"
   else
     puts "C'est la valeur #{choix.inspect} qui a été choisie…"
   end
+when "test-precedence-par-index"
+  complex_choices = [
+    {name:"La classe Integer" , value: Integer},
+    {name:"La classe Hash"    , value: Hash},
+    {name:"La classe Array"   , value: Array},
+    {name:"La classe String"  , value: String},
+  ]
+  4.times do
+    choix = precedencize(complex_choices, precfile) do |q|
+      q.precedences_per_index
+    end
+  end
 else
   # 
   # Le test par défaut pour voir si la liste de précédence 

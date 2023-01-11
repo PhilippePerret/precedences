@@ -133,3 +133,4 @@ choix = precedencize(choices, file) do |q|
 end
 ~~~
 
+> 😃 Noter qu’on peut en fait se servir de ce menu pour ajouter n’importe quel autre menu que “Renoncer”.

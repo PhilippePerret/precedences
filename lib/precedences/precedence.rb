@@ -61,7 +61,12 @@ class Precedence
       # 
       # On procède au choix
       # 
-      choix = Q.select(question.jaune, choices, **options)
+      begin
+        choix = Q.select(question.jaune, choices, **options)
+      rescue TTY::Reader::InputInterrupt
+        # Annulation par ^C
+        return nil
+      end
       # 
       # On enregistre ce choix (sauf si null ou :cancel)
       # 
@@ -144,6 +149,7 @@ class Precedence
     default_params = {value: nil, name: "Cancel", position: :down}
     params = default_params.merge(params)
     params.merge!(position: where.to_s.downcase.to_sym) unless where.nil?
+    params.merge!(name: params[:name].orange)
     @add_choice_cancel = params
   end
 

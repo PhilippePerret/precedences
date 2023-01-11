@@ -20,9 +20,20 @@ class Precedence
     @help       = ''
     @per_page   = nil
     @default    = 1
+    @precedences_per_index = false
   end
 
   def sort(choices_ini, &block)
+
+    # 
+    # On doit évaluer le bloc ici car certaines valeurs peuvent
+    # modifier le comportement de la suite.
+    # Par exemple, si @precedences_per_index a été mis à true,
+    # on peut permettre n'importe quel type de :value dans les 
+    # hash
+    if block_given?
+      block.call(self)
+    end
 
     # 
     # List of choices must be valid
@@ -35,12 +46,10 @@ class Precedence
     # 
     choices = choices_ini.dup
   
-    if File.exist?(filepath)
-      prec_ids = get_precedences_ids
-      choices.sort!{|a, b|
-        (prec_ids.index(a[:value].to_s)||10000) <=> (prec_ids.index(b[:value].to_s)||10000)
-      }
-    end
+    #
+    # Sort the list of choices
+    # 
+    choices = sort_items(choices)
 
     if block_given?
       block.call(self)
@@ -68,54 +77,78 @@ class Precedence
     end
   end
 
+  # --- Predicate Methods ---
+
+  def precedences_per_index?
+    @precedences_per_index === true
+  end
+
   # --- Tty prompt Methods ---
 
   def question(quest = nil)
-    if quest.nil?
-      return @question
-    else
-      @question = quest
-    end
+    @question = quest unless quest.nil?
+    return @question
   end
   def question=(quest) ; question(quest) end
 
   def per_page(value = nil)
-    if value.nil?
-      return @per_page
-    else
-      @per_page = value
-    end
+    @per_page = value unless value.nil?
+    return @per_page
   end
   def per_page=(value); per_page(value) end
 
   def show_help(value = nil)
-    if value === nil
-      return @show_help
-    else
-      @show_help = value
-    end
+    @show_help = value unless value === nil
+    return @show_help
   end
   def show_help=(value) ; show_help(value) end
 
   def default(value = nil)
-    if value.nil?
-      return @default
-    else
-      @default = value
-    end
+    @default = value unless value.nil?
+    return @default
   end
   def default=(value) ; default(value) end
 
   def help(value = nil)
-    if value.nil?
-      return @help
-    else
-      @help = value
-    end
+    @help = value unless value.nil?
+    return @help
   end
   def help=(value) ; help(value) end
 
+  def precedences_per_index(value = nil)
+    if value === false
+      @precedences_per_index = false
+    else
+      @precedences_per_index = true
+    end
+    return @precedences_per_index
+  end
+  def precedences_per_index=(value) ; precedences_per_index(value) end
+
   private
+
+
+    ##
+    # = main =
+    #
+    # Main method whose sort items
+    # 
+    # @api private
+    def sort_items(choices)
+      return choices unless File.exist?(filepath)
+      prec_ids = get_precedences_ids
+      if precedences_per_index?
+        choices = prec_ids.map { |id| choices[id.to_i - 1] }
+      else
+        # 
+        # Cas normal
+        # 
+        choices.sort!{|a, b|
+          (prec_ids.index(a[:value].to_s)||10000) <=> (prec_ids.index(b[:value].to_s)||10000)
+        }
+      end
+      return choices
+    end
 
     ##
     # Define default tty-options (last parameter of select)
@@ -134,7 +167,22 @@ class Precedence
     # 
     # @api private
     def set_precedences_ids(value)
-      value = value.to_s
+      if precedences_per_index?
+        # 
+        # Mémorisation des choix par index
+        # (:value de n'importe quel type, mais la liste original
+        #  ne peut pas être changée)
+        # 
+        @choices_ini.each_with_index do |choice, idx|
+          value = (idx + 1).to_s and break if choice[:value] == value
+        end
+      else
+        # 
+        # Mémorisation des choix par valeur
+        # (plus fiable, la liste peut être changée)
+        # 
+        value = value.to_s
+      end
       pids = get_precedences_ids
       pids.delete(value)
       pids.unshift(value)
@@ -168,6 +216,11 @@ class Precedence
     # 
     # @api private
     def choices_valid_or_raises(choices)
+      # 
+      # On en aura besoin
+      # 
+      @choices_ini = choices.dup.freeze
+
       choices.is_a?(Array) || raise(ArgumentError.new('Bad choices. Should be an Array.'))
       choices.empty? && raise(ArgumentError.new("Bad choices. Shouldn't be empty." ))
       choices[1].is_a?(Hash) || raise(ArgumentError.new('Bad choices. Should be an Array of Hash(s).'))
@@ -190,7 +243,11 @@ class Precedence
             cvalues.merge!(val => choice[:value])
           end
         else
-          raise(ArgumentError.new("Bad choices. Attribute :value of choice should only be a String, a Symbol or a Numeric. #{choice[:value]} is a #{choice[:value].class}."))
+          if precedences_per_index?
+            # ok, :value peut avoir n'importe quelle valeur
+          else
+            raise(ArgumentError.new("Bad choices. Attribute :value of choice should only be a String, a Symbol, a Numeric or NilClass. #{choice[:value]} is a #{choice[:value].class}. Add option q.precedences_per_index in block if init never changes."))
+          end
         end
       end
     end

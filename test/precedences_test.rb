@@ -140,7 +140,7 @@ class PrecedencesTest < Minitest::Test
 
     badchoices = [{name:"Un entier", value: Integer}, {name:"Une table", value: Hash}]
     err = assert_raises(ArgumentError) { precedencize(badchoices, precfile) }
-    assert_equal("Bad choices. Attribute :value of choice should only be a String, a Symbol or a Numeric. Integer is a Class.", err.message)
+    assert_equal("Bad choices. Attribute :value of choice should only be a String, a Symbol, a Numeric or NilClass. Integer is a Class. Add option q.precedences_per_index in block if init never changes.", err.message)
 
     badchoices = [{name:"Un entier", value: :un}, {name:"Une table", value: 'un'}]
     err = assert_raises(ArgumentError) { precedencize(badchoices, precfile) }

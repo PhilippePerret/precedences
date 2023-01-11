@@ -50,6 +50,10 @@ set_precedence(choix)
 # ...
 ~~~
 
+## Valeurs possible
+
+Dans l'utilisation normale, l'attribut `:value` des choices doit obligatoirement être de type `String`, `Sy`
+
 ## Options possible
 
 En mode block, on peut définir plusieurs choses :

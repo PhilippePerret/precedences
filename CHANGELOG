@@ -1,3 +1,9 @@
+# 1.1.0
+
+  - Option :precedences_per_index pour pouvoir utiliser n'importe
+    quel type de value, mais un enregistrement des précédences par
+    index.
+    
 # 1.0.1
 
   - :value of a choice can be nil.

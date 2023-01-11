@@ -50,11 +50,33 @@ set_precedence(choix)
 # ...
 ~~~
 
-## Valeurs possible
+## Valeurs possibles
 
-Dans l'utilisation normale, l'attribut `:value` des choices doit obligatoirement être de type `String`, `Sy`
+Dans l'utilisation normale, l'attribut `:value` des choices doit obligatoirement être de type `String`, `Symbol` ou `Numeric`, mais avec l’option `precedences_per_index`, il est possible d’utiliser n’importe quelle valeur (note : l’ordre est alors mémorisé par index — ce qui signifie qu’il ne faut pas modifier la liste en cours de route).
 
-## Options possible
+Par exemple :
+
+~~~ruby
+require 'precedences'
+
+#
+# Des choix avec des valeurs spéciales
+#
+choices = [
+  {name:"La classe Integer"		, value: Integer},
+  {name:"La classe Array"			, value: Array},
+  {name:"La classe Hash"			, value: Hash},
+]
+
+choix = precedencize(choices, file) do |q|
+  q.question "Choisis une classe"
+  q.precedences_per_index  # <=== option pour que ça passe
+end
+~~~
+
+
+
+## Options possibles
 
 En mode block, on peut définir plusieurs choses :
 

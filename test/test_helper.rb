@@ -11,3 +11,6 @@ reporter_options = {
   slow_threshold: true, # pour signaler les tests trop longs
 }
 Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(reporter_options)]
+
+
+APP_FOLDER = File.dirname(__dir__)

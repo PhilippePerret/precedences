@@ -6,12 +6,22 @@ class BlockPrecedencesTest < Minitest::Test
   def setup
     super
     File.delete(precfile) if File.exist?(precfile)
-    # `cd "#{APP_FOLDER}";rake build; gem install pkg/precedences-#{version}`
+    puts "version = #{version.inspect}"
+    update_gem
   end
 
   def teardown
     super
     # tosa.abort.finish
+  end
+
+  def update_gem
+    `cd "#{APP_FOLDER}";git commit -am "Dépôt du #{Time.now}"; git push; rake build; gem install pkg/precedences-#{version}.gem`
+  end
+
+  def version
+    require (File.join(APP_FOLDER,'lib','precedences','version'))
+    return Precedences::VERSION
   end
 
   def precfile
@@ -43,7 +53,7 @@ class BlockPrecedencesTest < Minitest::Test
 
     # - avec un menu "Cancel" -
     run_test "test-with-cancel-menu"
-    tosa.has_in_last_lines(["Cancel"], /Fourth.+Cancel/m)
+    tosa.has_in_last_lines(["Cancel", /Fourth.+Cancel/m])
     tosa << [4.down, :RET]
     refute(File.exist?(precfile), "Le fichier des précédences ne devrait pas avoir été créé…")
 

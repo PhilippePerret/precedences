@@ -53,7 +53,6 @@ class Precedence
     choices = sort_items(choices)
 
     if block_given?
-      block.call(self)
       # 
       # Tty-select options
       # 
@@ -85,6 +84,8 @@ class Precedence
   end
 
   def add_choice_cancel?
+    puts "add_choice_cancel? est #{not(@add_choice_cancel.nil?).inspect} (@add_choice_cancel = #{@add_choice_cancel.inspect})"
+    sleep 4
     not(@add_choice_cancel.nil?)
   end
 

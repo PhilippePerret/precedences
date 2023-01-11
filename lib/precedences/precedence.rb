@@ -113,7 +113,7 @@ class Precedence
     def define_tty_options(choices)
       {
         per_page:   self.per_page || choices.count,
-        show_help:  self.show_help,
+        show_help:  self.show_help ? :always : :never,
         echo:       nil,
         help:       self.help,
       }

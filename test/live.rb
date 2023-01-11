@@ -11,10 +11,18 @@ choices = [
 precfile = File.join(__dir__, '.precedences')
 
 case ARGV[0]
-when "test1"
-  puts "Je dois apprendre à faire le test d'intégration 1"
+when "limit-per-page"
   precedencize(choices, precfile) do |q|
     q.per_page 3
+  end
+when 'test-custom-question'
+  precedencize(choices, precfile) do |q|
+    q.question "Choisir un item dans la liste"
+  end
+when "test-custom-help"
+  precedencize(choices, precfile) do |q|
+    q.show_help true
+    q.help "Presser une des flèches"
   end
 else
   4.times do

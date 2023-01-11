@@ -10,7 +10,7 @@ class BlockPrecedencesTest < Minitest::Test
 
   def teardown
     super
-    tosa.abort.finish
+    # tosa.abort.finish
   end
 
   def precfile
@@ -37,11 +37,22 @@ class BlockPrecedencesTest < Minitest::Test
     tosa.run("ruby ./live.rb #{name}")
   end
 
-  def test_with_block
+  def test_with_block_and_customs_things
 
-    run_test "test1"
+    # - per_page limité -
+    run_test "limit-per-page"
     tosa.has_in_last_lines(["Choose", "First","Second","Third"])
     tosa.has_not_in_last_lines("Fourth")
+    tosa << :RET
+
+    # - question personnalisée -
+    run_test "test-custom-question"
+    tosa.has_in_last_lines(["Choisir un item dans la liste", "Fourth"])
+    tosa << :RET
+
+    # - aide personnalisée -
+    run_test "test-custom-help"
+    tosa.has_in_last_lines("Presser une des flèches")
     tosa << :RET
 
   end

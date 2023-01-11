@@ -11,6 +11,10 @@ choices = [
 precfile = File.join(__dir__, '.precedences')
 
 case ARGV[0]
+when "test-annulation-control-c"
+  precedencize(choices, precfile) do |q|
+  end
+  puts "\nDemande annulée"
 when "test-with-cancel-menu"
   precedencize(choices, precfile) do |q|
     q.add_choice_cancel

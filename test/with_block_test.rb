@@ -51,6 +51,14 @@ class BlockPrecedencesTest < Minitest::Test
 
   def test_with_block_and_customs_things
 
+    # - Test de l'annulation par control-c -
+    run_test "test-annulation-control-c"
+    sleep 0.5
+    tosa << [{key: 'c', modifiers:[:control]}]
+    sleep 0.5
+    tosa.has_in_last_lines("Demande annulée")
+    refute(File.exist?(precfile), "Le fichier des précédences ne devrait pas avoir été créé…")
+
     # - avec un menu "Cancel" -
     run_test "test-with-cancel-menu"
     tosa.has_in_last_lines(["Cancel", /Fourth.+Cancel/m])

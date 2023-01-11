@@ -29,27 +29,27 @@ when "test-default-value"
     q.default 4
   end
   if choix == :fourth
-    "La valeur Quatre a bien été choisie."
+    puts "La valeur Quatre a bien été choisie."
   else
-    "C'est la valeur #{choix.inspect} qui a été choisie…"
+    puts "C'est la valeur #{choix.inspect} qui a été choisie…"
   end
 when "test-default-value-by-name"
   choix = precedencize(choices, precfile) do |q|
     q.default "Third"
   end
   if choix == :third
-    "La valeur Third a bien été choisie."
+    puts "La valeur Trois a bien été choisie."
   else
-    "C'est la valeur #{choix.inspect} qui a été choisie…"
+    puts "C'est la valeur #{choix.inspect} qui a été choisie…"
   end
 when "test-default-value-by-value"
   choix = precedencize(choices, precfile) do |q|
     q.default :second
   end
   if choix == :second
-    "La valeur Deux a bien été choisie."
+    puts "La valeur Deux a bien été choisie."
   else
-    "C'est la valeur #{choix.inspect} qui a été choisie…"
+    puts "C'est la valeur #{choix.inspect} qui a été choisie…"
   end
 else
   # 

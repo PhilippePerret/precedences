@@ -10,7 +10,7 @@ class BlockPrecedencesTest < Minitest::Test
 
   def teardown
     super
-    # tosa.abort.finish
+    tosa.abort.finish
   end
 
   def precfile

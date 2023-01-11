@@ -1,6 +1,6 @@
 # Precedences
 
-Gestion des items de liste (avec TTY-Prompt) sous le principe "the last is the first" (le premier est le dernier), c'est-à-dire que le derrnier choix effectué sera toujours le premier présenté ensuite.
+Deal with order of items in a select list of TTY-Prompt, applying the "last is the first" principle. Hence, last choice in the list will always be the first in the future.
 
 ## Installation
 
@@ -31,8 +31,8 @@ choices = [
 
 myfile = File.join(__dir__, 'my.precedences')
 
-choices_with_precedences(choices, myfile) do
-  "Choose a item"
+choix = precedencize(choices, myfile) do |q|
+  q.question "Choose a item among:"
 end
 
 ~~~

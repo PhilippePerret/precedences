@@ -68,6 +68,14 @@ choix = precedencize(choices, precfile) do |q|
   q.question = "Ma question"
   # ou
   q.question "Ma question"
+  
+  #
+  # Le nombre de menus affichés
+  # (noter que par défaut, tous les menus sont affichés, contrairement
+  #  à tty-prompt qui les limite toujours)
+  #
+  q.per_page 5
+  # ou q.per_page = 5
 
   # 
   # L'affichage ou non de l'aide (:never par défaut)
@@ -104,3 +112,24 @@ choix = precedencize(choices, precfile) do |q|
 end
 
 ~~~
+
+#### Ajouter un menu “Renoncer”
+
+~~~ruby
+choix = precedencize(choices, file) do |q|
+  q.add_choice_cancel(:up, {value: :cancel, name: "Renoncer"})
+end
+~~~
+
+Si on doit utiliser les valeurs par défaut que sont :
+
+* `:name` est “Cancel”
+* `:value` est `nil`
+* position est `:down` alors on peut faire simplement
+
+~~~ruby
+choix = precedencize(choices, file) do |q|
+  q.add_choice_cancel
+end
+~~~
+

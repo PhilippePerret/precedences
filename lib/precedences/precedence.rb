@@ -125,6 +125,12 @@ class Precedence
   end
   def precedences_per_index=(value) ; precedences_per_index(value) end
 
+  def add_choice_cancel(where, **options)
+    
+  end
+
+
+
   private
 
 

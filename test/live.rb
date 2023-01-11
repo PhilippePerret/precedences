@@ -11,6 +11,14 @@ choices = [
 precfile = File.join(__dir__, '.precedences')
 
 case ARGV[0]
+when "test-with-cancel-menu"
+  precedencize(choices, precfile) do |q|
+    q.add_choice_cancel
+  end
+when "test-with-cancel-menu-customised"
+  precedencize(choices, precfile) do |q|
+    q.add_choice_cancel(:up, {value: 'bonbon', name:"Choisir le bonbon"})
+  end
 when "limit-per-page"
   precedencize(choices, precfile) do |q|
     q.per_page 3

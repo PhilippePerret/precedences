@@ -6,11 +6,12 @@ class BlockPrecedencesTest < Minitest::Test
   def setup
     super
     File.delete(precfile) if File.exist?(precfile)
+    # `cd "#{APP_FOLDER}";rake build; gem install pkg/precedences-#{version}`
   end
 
   def teardown
     super
-    tosa.abort.finish
+    # tosa.abort.finish
   end
 
   def precfile
@@ -34,10 +35,26 @@ class BlockPrecedencesTest < Minitest::Test
   end
 
   def run_test(name)
+    File.delete(precfile) if File.exist?(precfile)
     tosa.run("ruby ./live.rb #{name}")
   end
 
   def test_with_block_and_customs_things
+
+    # - avec un menu "Cancel" -
+    run_test "test-with-cancel-menu"
+    tosa.has_in_last_lines(["Cancel"], /Fourth.+Cancel/m)
+    tosa << [4.down, :RET]
+    refute(File.exist?(precfile), "Le fichier des précédences ne devrait pas avoir été créé…")
+
+    # - avec un menu "Renoncer" customisé -
+    run_test "test-with-cancel-menu-customised"
+    tosa.has_in_last_lines(["Choisir le bonbon", /Choisir le bonbon.+First/m])
+    tosa << :RET
+    assert(File.exist?(precfile), "Le fichier des précédences devrait exister.")
+    actual    = File.read(precfile).split("\n")
+    expected  = ['bonbon']
+    assert_equal(expected, actual, "Les ids des précédences devraient être #{expected.inspect}. Il faut contient #{actual.inspect}.")
 
     # - avec des :value complexe (enregistrement par index) -
     run_test "test-precedence-par-index"

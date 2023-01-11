@@ -1,5 +1,8 @@
 .DS_Store
 
+.precedences
+*.precedences
+
 /.bundle/
 /.yardoc
 /_yardoc/

@@ -26,7 +26,7 @@ class BlockPrecedencesTest < Minitest::Test
 
   def tosa
     @tosa ||= begin
-      OSATest.new(**{app:'Terminal', delay: 0.3,}).tap { |its| 
+      OSATest.new(**{app:'Terminal', delay: 0.2,}).tap { |its| 
         its.new_window 
         its.run "cd '#{__dir__}'"
       }
@@ -54,6 +54,21 @@ class BlockPrecedencesTest < Minitest::Test
     run_test "test-custom-help"
     tosa.has_in_last_lines("Presser une des flèches")
     tosa << :RET
+
+    # - valeur par défaut -
+    run_test "test-default-value"
+    tosa << :RET
+    tosa.has_in_last_lines("La valeur Quatre a bien été choisie.")
+  
+    # - valeur par défaut par name -
+    run_test "test-default-value-by-name"
+    tosa << :RET
+    tosa.has_in_last_lines("La valeur Trois a bien été choisie.")
+
+    # - valeur par défaut par value -
+    run_test "test-default-value-by-value"
+    tosa << :RET
+    tosa.has_in_last_lines("La valeur Deux a bien été choisie.")
 
   end
 

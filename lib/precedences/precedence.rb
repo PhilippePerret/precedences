@@ -19,6 +19,7 @@ class Precedence
     @show_help  = nil
     @help       = ''
     @per_page   = nil
+    @default    = 1
   end
 
   def sort(choices_ini, &block)
@@ -96,6 +97,15 @@ class Precedence
   end
   def show_help=(value) ; show_help(value) end
 
+  def default(value = nil)
+    if value.nil?
+      return @default
+    else
+      @default = value
+    end
+  end
+  def default=(value) ; default(value) end
+
   def help(value = nil)
     if value.nil?
       return @help
@@ -116,6 +126,7 @@ class Precedence
         show_help:  self.show_help ? :always : :never,
         echo:       nil,
         help:       self.help,
+        default:    get_default_value_index(choices),
       }
     end
 
@@ -182,6 +193,26 @@ class Precedence
           raise(ArgumentError.new("Bad choices. Attribute :value of choice should only be a String, a Symbol or a Numeric. #{choice[:value]} is a #{choice[:value].class}."))
         end
       end
+    end
+
+    ##
+    # @return index (1-based) of default value if defined (even it's a
+    # bit silly with precedences…)
+    # 
+    def get_default_value_index(choices)
+      return default if default.is_a?(Integer) && default > 0
+      # 
+      # On recherche la valeur dans les choix (:name or :value)
+      # 
+      choices.each_with_index do |choice, idx|
+        the_index = idx + 1
+        return the_index if choice[:value] == default
+        return the_index if choice[:name].match?(/#{default}/)
+      end
+      # 
+      # Si on n'a rien trouvé, on s'en retourne avec le premier
+      # 
+      return 1
     end
 end #/class Precedence
 end #/module Clir

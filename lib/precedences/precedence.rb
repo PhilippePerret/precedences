@@ -20,7 +20,8 @@ class Precedence
     @help       = ''
     @per_page   = nil
     @default    = 1
-    @precedences_per_index = false
+    @precedences_per_index  = false
+    @add_choice_cancel      = nil
   end
 
   def sort(choices_ini, &block)
@@ -83,6 +84,10 @@ class Precedence
     @precedences_per_index === true
   end
 
+  def add_choice_cancel?
+    not(@add_choice_cancel.nil?)
+  end
+
   # --- Tty prompt Methods ---
 
   def question(quest = nil)
@@ -125,8 +130,21 @@ class Precedence
   end
   def precedences_per_index=(value) ; precedences_per_index(value) end
 
-  def add_choice_cancel(where = :down, **options)
-    
+  ##
+  # To add the cancel choice
+  # 
+  def add_choice_cancel(where = :down, **params)
+    if where.is_a?(Hash)
+      params = where
+      where   = nil
+    else
+      params ||= {}
+    end
+    params ||= {}
+    default_params = {value: nil, name: "Cancel", position: :down}
+    params = default_params.merge(params)
+    params.merge!(position: where.to_s.downcase.to_sym) unless where.nil?
+    @add_choice_cancel = params
   end
 
 
@@ -159,6 +177,13 @@ class Precedence
         choices.sort!{|a, b|
           (prec_ids.index(a[:value].to_s)||10000) <=> (prec_ids.index(b[:value].to_s)||10000)
         }
+      end
+      # 
+      # Faut-il ajouter un choix cancel ?
+      # 
+      if add_choice_cancel?
+        add_method = (@add_choice_cancel[:position] == :down) ? :push : :unshift
+        choices.send(add_method, @add_choice_cancel)
       end
       return choices
     end

@@ -15,10 +15,12 @@ when "test-with-cancel-menu"
   precedencize(choices, precfile) do |q|
     q.add_choice_cancel
   end
+  sleep 4
 when "test-with-cancel-menu-customised"
   precedencize(choices, precfile) do |q|
     q.add_choice_cancel(:up, {value: 'bonbon', name:"Choisir le bonbon"})
   end
+  sleep 4
 when "limit-per-page"
   precedencize(choices, precfile) do |q|
     q.per_page 3

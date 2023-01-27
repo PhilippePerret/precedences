@@ -275,7 +275,7 @@ class Precedence
 
       choices.is_a?(Array) || raise(ArgumentError.new('Bad choices. Should be an Array.'))
       choices.empty? && raise(ArgumentError.new("Bad choices. Shouldn't be empty." ))
-      choices[1].is_a?(Hash) || raise(ArgumentError.new('Bad choices. Should be an Array of Hash(s).'))
+      choices[0].is_a?(Hash) || raise(ArgumentError.new('Bad choices. Should be an Array of Hash(s).'))
       # 
       # To check unicity of values
       # 

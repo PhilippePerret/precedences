@@ -1,3 +1,8 @@
+# 1.3.1
+
+  - correction du bug sur le check des choices (on prend le premier
+    au lieu du deuxième qui pourrait ne pas exister)
+    
 # 1.3.0
 
   - Possibilité de faire Control-C pour interrompre (annuler)

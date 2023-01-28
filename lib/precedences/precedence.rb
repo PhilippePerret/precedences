@@ -260,6 +260,8 @@ class Precedence
       File.exist?(File.dirname(filepath)) || raise(ArgumentError.new("Precedences incorrect file: its folder should exist."))
       if File.exist?(filepath) && File.directory?(filepath)
         @filepath = File.join(filepath, '.precedences')
+      elsif File.extname(filepath).empty? && !File.basename(filepath).start_with?('.')
+        @filepath = "#{filepath}.precedences"
       end
     end
 

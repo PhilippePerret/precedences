@@ -29,9 +29,9 @@ class PrecedencesTest < Minitest::Test
 
     choices = precedencize(choices_ini.dup, precfile)
 
-    assert_equal('First', choices[0][:name])
-    assert_equal('Second', choices[1][:name])
-    assert_equal('Third', choices[2][:name])
+    assert_equal('First',   choices[0][:name])
+    assert_equal('Second',  choices[1][:name])
+    assert_equal('Third',   choices[2][:name])
 
     set_precedence(:second)
 
@@ -97,6 +97,19 @@ class PrecedencesTest < Minitest::Test
     ids = File.read(filepath).split("\n")
     expected = ['third','quinze','second', 'deux']
     assert_equal(expected, ids, "Precedences ids should be #{expected.inspect}. They are #{ids.inspect}.")
+  end
+
+  def test_filename_of_filepath
+    [
+      [__dir__, '.precedences'],
+      ['.precedences', '.precedences'],
+      ['.prec', '.prec'],
+      ['sansext', 'sansext.precedences'],
+    ].each do |filepath, expected|
+      pr = Clir::Precedence.new(filepath)
+      actual = File.basename(pr.filepath)
+      assert_equal(expected, actual, "Precedence file name should be '#{expected}'. It is '#{actual}'")
+    end
   end
 
 ###################       TEST DES ERREURS      ###################

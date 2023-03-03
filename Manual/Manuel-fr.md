@@ -50,6 +50,18 @@ set_precedence(choix)
 # ...
 ~~~
 
+On peut même considérer un troisième bloc qui utilise juste la méthode `set_precedence(choix, fichier)` quand le traitement du choix se fait ailleurs. Typiquement, on l’utilise quand la valeur peut être transmise directement au script, par exemple en ligne de commande.
+
+~~~ruby
+require 'precedences'
+
+choix = ARGV[0] || demande_la_valeur_du_choix || return
+
+set_precedence(choix, "<file/to/precedences_file>")
+~~~
+
+
+
 ## Valeurs possibles
 
 Dans l'utilisation normale, l'attribut `:value` des choices doit obligatoirement être de type `String`, `Symbol` ou `Numeric`, mais avec l’option `precedences_per_index`, il est possible d’utiliser n’importe quelle valeur (note : l’ordre est alors mémorisé par index — ce qui signifie qu’il ne faut pas modifier la liste en cours de route).

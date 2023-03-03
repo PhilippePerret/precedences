@@ -6,6 +6,11 @@ def precedencize(choices, filename, &block)
   return prec.sort(choices, &block)
 end
 
-def set_precedence(choix)
-  Clir::Precedence.current.send(:set_precedences_ids, choix)
+def set_precedence(choix, filename = nil)
+  prec =  if filename.nil?
+            Clir::Precedence.current  
+          else
+            Clir::Precedence.new(filename)
+          end
+  prec.send(:set_precedences_ids, choix)
 end

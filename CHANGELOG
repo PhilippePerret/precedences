@@ -1,3 +1,7 @@
+# 1.4.1
+
+  - option :filter à true pour le TTY::select
+
 # 1.4.0
 
   - On peut appeler `set_precedence` avec un fichier pour une utilisation sans pré-traitement.

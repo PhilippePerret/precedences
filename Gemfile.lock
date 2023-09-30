@@ -1,17 +1,17 @@
 PATH
   remote: .
   specs:
-    precedences (0.1.0)
-      clir
+    precedences (1.4.1)
+      clir (>= 0.16)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    clir (0.16.1)
+    clir (0.22.1)
       json
       tty-prompt
     json (2.6.3)
-    minitest (5.17.0)
+    minitest (5.20.0)
     minitest-color (0.0.2)
       minitest (~> 5)
     pastel (0.8.0)
@@ -33,7 +33,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  clir
+  clir (>= 0.16)
   minitest (~> 5.0)
   minitest-color
   precedences!

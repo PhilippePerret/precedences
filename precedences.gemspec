@@ -8,14 +8,14 @@ Gem::Specification.new do |s|
 
   s.summary       = %q{Sort list with "the last is the first" principle}
   s.description   = %q{Tty-prompt extension to sort a list of choices along the "last is firts" principle.}
-  s.homepage      = "https://github.com/PhilippePerret/precedences"
+  s.homepage      = "https://rubygems.org/gems/precedences"
   s.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
-  s.add_dependency 'clir'
+  s.add_dependency 'clir', '>= 0.16'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'minitest-color'
 
-  s.metadata["allowed_push_host"] = "https://github.com/PhilippePerret/precedences"
+  s.metadata["allowed_push_host"] = "https://rubygems.org"
 
   s.metadata["homepage_uri"] = s.homepage
   s.metadata["source_code_uri"] = "https://github.com/PhilippePerret/precedences"

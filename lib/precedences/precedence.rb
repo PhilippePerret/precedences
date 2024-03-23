@@ -213,6 +213,7 @@ class Precedence
         help:       self.help,
         default:    get_default_value_index(choices),
         filter:     true,
+        cycle:      true
       }
     end
 

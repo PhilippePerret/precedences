@@ -1,3 +1,7 @@
+# 1.5.1
+
+  - Ajout de l’option `:cycle` pour `Q.select`
+
 # 1.4.1
 
   - option :filter à true pour le TTY::select

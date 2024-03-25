@@ -86,6 +86,25 @@ choix = precedencize(choices, file) do |q|
 end
 ~~~
 
+On peut aussi définir une autre clé que `:value` pour le tri, avec la propriété `per_other_key`
+
+~~~ruby
+require 'precedences'
+
+#
+# Des choix avec des valeurs spéciales
+#
+choices = [
+  {name:"La classe Integer"   , pkey: :entier, value: Integer},
+  {name:"La classe Array"     , pkey: :liste   ,value: Array},
+  {name:"La classe Hash"      , pkey: :table , value: Hash},
+]
+
+choix = precedencize(choices, file) do |q|
+  q.question "Choisis une classe"
+  q.per_other_key :pkey  # <=== autre clé
+end
+~~~
 
 
 ## Options possibles

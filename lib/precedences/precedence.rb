@@ -21,6 +21,7 @@ class Precedence
     @per_page   = nil
     @default    = 1
     @precedences_per_index  = false
+    @per_other_key          = nil
     @add_choice_cancel      = nil
   end
 
@@ -89,6 +90,10 @@ class Precedence
     @precedences_per_index === true
   end
 
+  def per_other_key?
+    not(@per_other_key.nil?)
+  end
+
   def add_choice_cancel?
     not(@add_choice_cancel.nil?)
   end
@@ -135,6 +140,17 @@ class Precedence
   end
   def precedences_per_index=(value) ; precedences_per_index(value) end
 
+  def per_other_key(value = :__no_value)
+    if value == :__no_value
+      return @per_other_key
+    elsif not(value)
+      @per_other_key = nil
+    else
+      @per_other_key = value
+    end
+  end
+  def per_other_key=(value) ; per_other_key(value) end
+
   ##
   # To add the cancel choice
   # 
@@ -178,16 +194,17 @@ class Precedence
     #
     # Main method whose sort items
     # 
-    # @api private
+    # @private
     def sort_items(choices)
       return choices unless File.exist?(filepath)
       prec_ids = get_precedences_ids
       if precedences_per_index?
         choices_copy = choices.dup
-        choices = prec_ids.map do |id| 
-          item = choices_copy[id.to_i - 1]
+        choices = []
+        prec_ids.each do |id| 
+          item = choices_copy[id.to_i - 1] || next
           choices_copy[id.to_i - 1] = nil
-          item
+          choices << item
         end
         # On ajoute les choix restants
         choices += choices_copy.compact
@@ -195,8 +212,9 @@ class Precedence
         # 
         # Cas normal
         # 
+        key_prec = per_other_key? ? per_other_key : :value
         choices.sort!{|a, b|
-          (prec_ids.index(a[:value].to_s)||10000) <=> (prec_ids.index(b[:value].to_s)||10000)
+          (prec_ids.index(a[key_prec].to_s)||10000) <=> (prec_ids.index(b[key_prec].to_s)||10000)
         }
       end
       return choices
@@ -219,7 +237,7 @@ class Precedence
 
     # Save the values order in filepath file
     # 
-    # @api private
+    # @private
     def set_precedences_ids(value)
       if precedences_per_index?
         # 
@@ -245,7 +263,7 @@ class Precedence
 
     # Get the values sorted if filepath exists.
     # 
-    # @api private
+    # @private
     def get_precedences_ids
       @get_precedences_ids ||= begin
         File.exist?(filepath) ? File.read(filepath).split("\n") : [] 
@@ -257,7 +275,7 @@ class Precedence
     # Raise an argument error otherwise.
     # If it's a folder, set to .precedences file
     # 
-    # @api private
+    # @private
     def filepath_validize_or_raises
       File.exist?(File.dirname(filepath)) || raise(ArgumentError.new("Precedences incorrect file: its folder should exist."))
       if File.exist?(filepath) && File.directory?(filepath)
@@ -270,7 +288,7 @@ class Precedence
     ##
     # Check if given choices are valid. Raise an ArgumentError otherwise
     # 
-    # @api private
+    # @private
     def choices_valid_or_raises(choices)
       # 
       # On en aura besoin

@@ -1,3 +1,10 @@
+# 1.6.1
+
+  - Correction du bug quand classement par index et suppression
+    d’un item (trou)
+  - Ajout de la possibilité de définir une autre clé pour le
+    classement (`per_other_key`).
+
 # 1.5.1
 
   - Ajout de l’option `:cycle` pour `Q.select`

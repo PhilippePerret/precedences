@@ -51,6 +51,28 @@ class PrecedencesTest < Minitest::Test
     
   end
 
+  def test_precedencize_with_other_key
+
+    refute(File.exist?(precfile))
+
+    h = {first: "un", second: "deux", third: "trois"}
+    choices = choices_ini.map do |choix|
+      choix.merge(pkey: h[choix[:value]])
+    end
+
+    IO.write(precfile, "deux\ntrois\nun\n")
+
+    prec = Clir::Precedence.new(precfile)
+    prec.per_other_key(:pkey)
+
+    sorted_items = prec.send(:sort_items, choices)
+
+    assert_equal('Second',  sorted_items[0][:name])
+    assert_equal('Third',   sorted_items[1][:name])
+    assert_equal('First',   sorted_items[2][:name])
+
+  end
+
   def order_must_be(order)
     ids = File.read(precfile).split("\n")
     order.each_with_index do |id, idx|

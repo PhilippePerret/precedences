@@ -181,8 +181,8 @@ class Precedence
   attr_reader :added_choices_before
   attr_reader :added_choices_after
   def add(name, value, **params)
-    @added_choices_before = []
-    @added_choices_after  = []
+    @added_choices_before ||= []
+    @added_choices_after  ||= []
     name.is_a?(String) || raise(ArgumentError.new("First argument should be a String."))
     lechoix = {name: name, value: value}
     if params[:at_top]

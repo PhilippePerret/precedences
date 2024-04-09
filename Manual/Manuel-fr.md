@@ -106,6 +106,7 @@ choix = precedencize(choices, file) do |q|
 end
 ~~~
 
+<a name="options"></a>
 
 ## Options possibles
 
@@ -161,6 +162,14 @@ choix = precedencize(choices, precfile) do |q|
   q.default = "premier"
   # ou q.default "premier"
   # => Sélectionnera le choix "Choix premier"
+  
+  # Ajout de menus à la fin, jamais classés
+  q.add "Dernier menu", :last
+  q.add_choice "Tout dernier", :very_last
+  
+  # Ajout de menus au début, jamais classés
+  q.add_choice "Tout premier".bleu, :very_first, **{at_top:true}
+  q.add("Premier", :first, {at_top: true})
 
 end
 
@@ -187,3 +196,9 @@ end
 ~~~
 
 > 😃 Noter qu’on peut en fait se servir de ce menu pour ajouter n’importe quel autre menu que “Renoncer”.
+
+
+
+#### Ajouter un menu quelconque
+
+Utiliser les méthodes `#add` ou `#add_choice` (alias). Cf. ci-dessus [Options possibles](#options).

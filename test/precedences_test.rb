@@ -134,6 +134,30 @@ class PrecedencesTest < Minitest::Test
     end
   end
 
+  # Test de l’ajout d’un menu non précédentisé, à l’aide de la
+  # méthode DSL #add
+  def test_add_choice_not_precedencized
+    filepath = File.join(mkdir(File.join(__dir__, 'essais')),'.precadd')
+    pr = Clir::Precedence.new(filepath)
+    assert_respond_to(pr, :add)    
+    assert_respond_to(pr, :add_choice)
+    res = pr.send(:prepare_choices, [])
+    assert_equal([], res, "Choices should be empty.")
+    pr.add("a item", :item)
+    res = pr.send(:prepare_choices, [])
+    assert_equal([{name: "a item", value: :item}], res)
+    # Doit ajouter à la fin par défaut
+    pr = Clir::Precedence.new(filepath)
+    pr.add_choice("A item", :true)
+    res = pr.send(:prepare_choices, [{name:"avant", value: :avant}])
+    assert_equal([{name:"avant", value: :avant},{name: "A item", value: :true}], res)
+    # Doit ajouter au début si param :at_top
+    pr = Clir::Precedence.new(filepath)
+    pr.add_choice("A item", :true, **{at_top: true})
+    res = pr.send(:prepare_choices, [{name:"avant", value: :avant}])
+    assert_equal([{name: "A item", value: :true},{name:"avant", value: :avant}], res)
+  end
+
 ###################       TEST DES ERREURS      ###################
   
   def test_with_bad_filepath

@@ -1,3 +1,8 @@
+# 1.7.0
+  
+  - Possiblité d’ajouter des menus hors classement à l’aide
+    de la méthode block #add (ou son alias #add_choice)
+
 # 1.6.1
 
   - Correction du bug quand classement par index et suppression

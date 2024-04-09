@@ -169,16 +169,42 @@ class Precedence
     @add_choice_cancel = params
   end
 
+  ##
+  # To add any choice not precedencized
+  # 
+  # @param name   [String] The menu name
+  # @param value  [Any]    Then value of the menu
+  # @param params [Hash]
+  #   :at_top     If true, add the item at the top
+  #               Else (default) add at the bottom
+  #
+  attr_reader :added_choices_before
+  attr_reader :added_choices_after
+  def add(name, value, **params)
+    @added_choices_before = []
+    @added_choices_after  = []
+    name.is_a?(String) || raise(ArgumentError.new("First argument should be a String."))
+    lechoix = {name: name, value: value}
+    if params[:at_top]
+      @added_choices_before << lechoix
+    else
+      @added_choices_after << lechoix
+    end
+  end
+  alias :add_choice :add
+
   private
 
     ##
     # = main =
+    # @private
     #
     def prepare_choices(choices)
       # 
       # Classement des choix par précédence
       # 
       choices = sort_items(choices)
+      
       # 
       # Faut-il ajouter un choix cancel ?
       # 
@@ -186,6 +212,17 @@ class Precedence
         add_method = (@add_choice_cancel[:position] == :down) ? :push : :unshift
         choices.send(add_method, @add_choice_cancel)
       end
+
+      #
+      # Y a-t-il des menus à ajouter ?
+      # 
+      if added_choices_before && not(added_choices_before.empty?)
+        choices = added_choices_before + choices
+      end
+      if added_choices_after && not(added_choices_after.empty?)
+        choices = choices + added_choices_after
+      end
+
       # 
       # On retourne les choix préparés
       # 
